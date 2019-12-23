@@ -2,7 +2,6 @@
 1. Looking up a value in a list is O(n)
 2. But we need to step outside that way of thinking 
 -}
-
 double :: Num a => a -> a
 double x = x + x
 
@@ -10,9 +9,9 @@ quadruple :: Num a => a -> a
 quadruple x = double (double x)
 
 factorial :: (Num a, Enum a) => a -> a
-factorial n = product [1..n]
+factorial nr = product [1..nr]
 
--- backticks syntactic sugar for x R y, which is R x y
+-- backticks syntactic sugar for x `R` y, which is R x y
 averageFloor :: Foldable t => t Int -> Int
 averageFloor ns = sum ns `div` length ns
 
@@ -38,7 +37,7 @@ n :: Int
 n = a `div` length xs
         where
             a = 10
-            xs = [1..5]
+            xs = [1..5] :: [Int]
 
 {- 
 ex 2: Implement the last xs function
@@ -58,9 +57,39 @@ dropLast :: [a] -> [a]
 dropLast xs =
     reverse (drop 1 (reverse xs))
 
+-- implement the length function    
+length' :: [a] -> Int
+length' []     = 0
+length' (_:xs) = 1 + length' xs
+
+-- implement the reverse function
+reverse' :: [a] -> [a]
+reverse' []     = []
+reverse' (x:xs) = reverse' xs ++ [x]
+
+-- implement the take function
+take' :: Int -> [a] -> [a]
+take' 0 _      = []
+take' _ []     = []
+take' k (x:xs) = [x] ++ take' k' xs
+    where k' = k - 1
+
+-- ugly, but w/o syntactic sugar of where
+-- idea of numpy of selecting last values from array
+take'' :: Int -> [a] -> [a]
+take'' 0 _      = []
+take'' _ []     = []
+take'' k (x:xs) = [x] ++ take'' ((\k' -> k' - 1) k) xs
+
+-- head and tail are trivial consequence of (_:_)
+-- what about tail as in Python or R
+-- this is ugly, would be more elegant to just drop
+tailR :: Int -> [a] -> [a]
+tailR k xs = reverse' (take' k (reverse' xs))
 
 {-
 ex3: Sum Integers with recursion
+* Product using pattern matching
 -}
 sumNumbers :: Num a => [a] -> a
 sumNumbers xs = doSum 0 xs
@@ -68,6 +97,11 @@ sumNumbers xs = doSum 0 xs
         doSum total []     = total
         doSum total [y]    = total + y
         doSum total (y:ys) = doSum (total + y) ys
+
+productNumbers :: Num a => [a] -> a
+productNumbers [] = 1
+productNumbers (x:xs) = x * productNumbers xs
+
 
 {- 
 ex4:
