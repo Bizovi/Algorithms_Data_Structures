@@ -4,6 +4,7 @@
 open System
 
 // ======== "Variables" (but not really) ==========
+// note that f# can access lists: my_list.[2]
 let x = 10
 let y = 0 :: [1;2;3] @ [3..6] // concatenating lists
 
@@ -101,6 +102,17 @@ type Temp =
     | DegreesF of float
 let temp = DegreesC 25.1
 
+
+// product types
+type IntAndBool = {intPart: int; boolPart: bool}
+let xIntBool = {intPart=1; boolPart=false}
+
+type IntOrBool = 
+    | IntChoice of int
+    | BoolChoice of bool
+    
+let xx = IntChoice 42
+let yy = BoolChoice true
 
 // ========= Printing =========
 // Complex types have pretty printing built in

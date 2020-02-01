@@ -83,3 +83,87 @@ let cartesian xs ys =
 
 printfn "%A" <| squaredEvens 10
 printfn "%A" <| cartesian [1..5] [1..5]
+
+// ======== Other tasks, as in haskell ========
+let rec orderedPairs xs ys = 
+    match xs, ys with
+    | [], [] -> []
+    | _ , [] -> []
+    | [], _  -> []
+    | x::xs, ys -> 
+        let ysSmall = List.filter (fun z -> x <= z) ys
+        List.map (fun y -> x, y) ysSmall @ orderedPairs xs ys
+ 
+let rec flattenList = function
+    | [[]] -> []
+    | []   -> []
+    | [xs] -> xs
+    | xs::xss -> flattenList [xs] @ flattenList xss
+
+ let rec zip xs ys = 
+    match xs, ys with
+    | [], _ -> []
+    | _, [] -> []
+    | x::xs, y::ys -> [x, y] @ zip xs ys
+
+ let rec adjacentPairs = function
+    | [] -> []
+    | x::xs -> 
+        let pair = 
+            if List.isEmpty xs = false then [x, List.head xs] else []
+        pair @ adjacentPairs xs
+
+ printfn "%A" <| orderedPairs [1..5] [1..5]
+ printfn "%A" <| flattenList [[1..4]; [2]; [3; 2], 2, 1]
+ printfn "%A" <| zip [1..5] [1..5]
+ printfn "%A" <| adjacentPairs [1..10]
+
+(* fold_
+    - abstract map and filter using recursive structures
+    - r - from the right (empty list)
+    - l - from the left
+
+Quirk of f# - need a continuation function
+*)
+
+(* TBD: make this work, as the same mechanism as in Haskell fails
+let rec foldr (list: List<'a>, func:('a -> 'b -> 'b), acc: 'b, cont:'b -> 'b) =
+    match list with
+    | [] -> cont acc
+    | x::xs -> foldr(xs, func, acc, fun r -> cont (func x r))
+
+let sumFold xs = 
+    foldr xs (+) 0 (fun x -> x)
+*)
+
+// printfn "%A" sumFold [1..10]
+
+
+(*
+    Pattern matching with disjoint union types. 
+    Similar to polymorphism in OOP, but with functions
+*)
+type Shape =  // is a type, a choice/disjoint union
+    | Circle of radius:int  // isn't actually a type
+    | Rectangle of height:int * width:int
+    | Point of x:int * y:int
+    | Polygon of pointList: (int * int) list // list of tuples of ints
+
+let draw shape = 
+    // pattern matches should be exhaustive
+    // to work with shape, should handle all cases!
+    match shape with 
+    | Circle radius -> 
+        printfn "The circle has a radius of %d" radius
+    | Rectangle (height, width) ->
+        printfn "The rectangle is %d high by %d wide" height width
+    | Polygon points -> 
+        printfn "The polygon is made of these points %A" points
+    | _ -> printfn "I don't recognize this shape"
+
+let circle = Circle(10)
+let rect = Rectangle(4, 5)
+let point = Point(2, 3)
+let polygon = Polygon( [(1, 1); (2, 2); (3, 3)] )
+
+[circle; rect; point; polygon] |> List.iter draw
