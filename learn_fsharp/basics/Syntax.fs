@@ -18,7 +18,8 @@ let quadruple (x:int): int =
 
 let sumOfFirstSquares (n:int): int =
     // equivalent to List.sum List.map fn [x]
-    List.sumBy (fun x -> x*x) [1..n] 
+    [1..n]
+    |> List.sumBy (fun x -> x*x)
 
 let netSalaryPromotion (salary:float) (taxRate:float) (raise:float): float =
     // sadly, there is no where statement as in Haskell
