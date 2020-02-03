@@ -109,7 +109,7 @@ Implement quicksort recursively:
 Ord is for ordered
 -}
 qsort :: Ord a => [a] -> [a]
-qsort [] = [] -- base case
+qsort []     = [] -- base case
 qsort (x:xs) = qsort smaller ++ [x] ++ qsort larger
     where
         smaller = [ a | a <- xs, a <= x ]

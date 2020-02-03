@@ -1,3 +1,11 @@
+# Haskell stuff
 **/*.hi
 **/*.o
+
+# VS Code stuff
 **/*.vscode
+**/.ionide
+
+# Fsharp stuff
+**/bin
+**/obj
