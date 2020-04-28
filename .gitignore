@@ -9,3 +9,5 @@
 # Fsharp stuff
 **/bin
 **/obj
+
+**/submission.py
