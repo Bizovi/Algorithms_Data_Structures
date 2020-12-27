@@ -133,8 +133,6 @@ fun map([] : 'a list, _) = []
 fun filter([], _) = []
   | filter(x::xs, f) = if f(x) = true then [x] @ filter(xs, f) else filter(xs, f)
 
-fun gt(k, x) = if k > x then true else false
-fun le(k, x) = if k <= x then true else false
 
 fun quicksort([], _) = []
   | quicksort (x::xs, reverse) = 
